@@ -1,4 +1,4 @@
-# React native collapsible tabView example
+# React native collapsible tabview example
 This is just a simple example implementing a tabview with collapsible header. Here we use ``react-native-tab-view`` in our implemetation.
 
 # Demo
