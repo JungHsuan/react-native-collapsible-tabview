@@ -14,7 +14,7 @@ const HeaderHeight = 300;
 const tab1ItemSize = (Dimensions.get('window').width - 30) / 2;
 const tab2ItemSize = (Dimensions.get('window').width - 40) / 3;
 
-class TabScene extends React.PureComponent {
+class TabScene extends React.Component {
   render = () => {
     const windowHeight = Dimensions.get('window').height;
     const {
@@ -25,7 +25,6 @@ class TabScene extends React.PureComponent {
       scrollY,
       onScrollEndDrag,
       onMomentumScrollEnd,
-      focused,
       onMomentumScrollBegin,
     } = this.props;
     return (
@@ -34,13 +33,10 @@ class TabScene extends React.PureComponent {
         numColumns={numCols}
         ref={onGetRef}
         scrollEventThrottle={16}
-        onScroll={
-          focused
-            ? Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
-                useNativeDriver: true,
-              })
-            : null
-        }
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: true},
+        )}
         onMomentumScrollBegin={onMomentumScrollBegin}
         onScrollEndDrag={onScrollEndDrag}
         onMomentumScrollEnd={onMomentumScrollEnd}
@@ -203,7 +199,6 @@ const App = () => {
     }
     return (
       <TabScene
-        focused={focused}
         numCols={numCols}
         data={data}
         renderItem={renderItem}
