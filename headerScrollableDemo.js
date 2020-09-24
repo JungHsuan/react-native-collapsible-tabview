@@ -8,6 +8,8 @@ import {
   Image,
   PanResponder,
   Platform,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {TabView, TabBar} from 'react-native-tab-view';
 
@@ -207,7 +209,12 @@ const App = () => {
       <Animated.View
         {...headerPanResponder.panHandlers}
         style={[styles.header, {transform: [{translateY: y}]}]}>
-        <Image style={{height: 300, width: '100%'}} source={{uri: imgUrl}} />
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{height: 300, width: '100%'}}
+          onPress={() => Alert.alert('header Clicked!')}>
+          <Image style={{height: 300, width: '100%'}} source={{uri: imgUrl}} />
+        </TouchableOpacity>
       </Animated.View>
     );
   };
@@ -387,7 +394,6 @@ const styles = StyleSheet.create({
   header: {
     height: 300,
     width: '100%',
-    backgroundColor: '#40C4FF',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
