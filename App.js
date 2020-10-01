@@ -13,49 +13,44 @@ const TabBarHeight = 48;
 const HeaderHeight = 300;
 const tab1ItemSize = (Dimensions.get('window').width - 30) / 2;
 const tab2ItemSize = (Dimensions.get('window').width - 40) / 3;
+const windowHeight = Dimensions.get('window').height;
 
-class TabScene extends React.Component {
-  render = () => {
-    const windowHeight = Dimensions.get('window').height;
-    const {
-      numCols,
-      data,
-      renderItem,
-      onGetRef,
-      scrollY,
-      onScrollEndDrag,
-      onMomentumScrollEnd,
-      onMomentumScrollBegin,
-    } = this.props;
-    return (
-      <Animated.FlatList
-        scrollToOverflowEnabled={true}
-        numColumns={numCols}
-        ref={onGetRef}
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: true},
-        )}
-        onMomentumScrollBegin={onMomentumScrollBegin}
-        onScrollEndDrag={onScrollEndDrag}
-        onMomentumScrollEnd={onMomentumScrollEnd}
-        ItemSeparatorComponent={() => <View style={{height: 10}} />}
-        ListHeaderComponent={() => <View style={{height: 10}} />}
-        contentContainerStyle={{
-          paddingTop: HeaderHeight + TabBarHeight,
-          paddingHorizontal: 10,
-          minHeight: windowHeight - TabBarHeight,
-        }}
-        showsHorizontalScrollIndicator={false}
-        data={data}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    );
-  };
-}
+const TabScene = ({ 
+  numCols,
+  data,
+  renderItem,
+  onGetRef,
+  scrollY,
+  onScrollEndDrag,
+  onMomentumScrollEnd,
+  onMomentumScrollBegin
+}) => (
+  <Animated.FlatList
+    scrollToOverflowEnabled={true}
+    numColumns={numCols}
+    ref={onGetRef}
+    scrollEventThrottle={16}
+    onScroll={Animated.event(
+      [{nativeEvent: {contentOffset: {y: scrollY}}}],
+      {useNativeDriver: true},
+    )}
+    onMomentumScrollBegin={onMomentumScrollBegin}
+    onScrollEndDrag={onScrollEndDrag}
+    onMomentumScrollEnd={onMomentumScrollEnd}
+    ItemSeparatorComponent={() => <View style={{height: 10}} />}
+    ListHeaderComponent={() => <View style={{height: 10}} />}
+    contentContainerStyle={{
+      paddingTop: HeaderHeight + TabBarHeight,
+      paddingHorizontal: 10,
+      minHeight: windowHeight - TabBarHeight,
+    }}
+    showsHorizontalScrollIndicator={false}
+    data={data}
+    renderItem={renderItem}
+    showsVerticalScrollIndicator={false}
+    keyExtractor={(item, index) => index.toString()}
+  />
+);
 
 const App = () => {
   const [tabIndex, setIndex] = useState(0);
@@ -86,7 +81,7 @@ const App = () => {
       if (item.key !== curRouteKey) {
         if (scrollY._value < HeaderHeight && scrollY._value >= 0) {
           if (item.value) {
-            item.value.scrollToOffset({
+            item.value?.scrollToOffset({
               offset: scrollY._value,
               animated: false,
             });
@@ -98,7 +93,7 @@ const App = () => {
             listOffset.current[item.key] == null
           ) {
             if (item.value) {
-              item.value.scrollToOffset({
+              item.value?.scrollToOffset({
                 offset: HeaderHeight,
                 animated: false,
               });
@@ -136,7 +131,7 @@ const App = () => {
     );
   };
 
-  const rednerTab1Item = ({item, index}) => {
+  const renderTab1Item = ({item, index}) => {
     return (
       <View
         style={{
@@ -153,7 +148,7 @@ const App = () => {
     );
   };
 
-  const rednerTab2Item = ({item, index}) => {
+  const renderTab2Item = ({item, index}) => {
     return (
       <View
         style={{
@@ -187,12 +182,12 @@ const App = () => {
       case 'tab1':
         numCols = 2;
         data = tab1Data;
-        renderItem = rednerTab1Item;
+        renderItem = renderTab1Item;
         break;
       case 'tab2':
         numCols = 3;
         data = tab2Data;
-        renderItem = rednerTab2Item;
+        renderItem = renderTab2Item;
         break;
       default:
         return null;
