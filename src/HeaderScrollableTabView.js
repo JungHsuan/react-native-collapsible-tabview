@@ -5,11 +5,11 @@ import {
   Text,
   Dimensions,
   Animated,
-  Image,
   PanResponder,
   Platform,
   TouchableOpacity,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {TabView, TabBar} from 'react-native-tab-view';
 
@@ -17,11 +17,12 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const TabBarHeight = 48;
 const HeaderHeight = 300;
-const SafeStatusBar = Platform.select({ios: 44, android: 0});
+const SafeStatusBar = Platform.select({
+  ios: 44,
+  android: StatusBar.currentHeight,
+});
 const tab1ItemSize = (windowWidth - 30) / 2;
 const tab2ItemSize = (windowWidth - 40) / 3;
-const imgUrl =
-  'https://images.pexels.com/photos/5168817/pexels-photo-5168817.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940';
 
 const App = () => {
   /**
@@ -33,8 +34,8 @@ const App = () => {
     {key: 'tab2', title: 'Tab2'},
   ]);
   const [canScroll, setCanScroll] = useState(true);
-  const [tab1Data] = useState(Array(10).fill(0));
-  const [tab2Data] = useState(Array(9).fill(0));
+  const [tab1Data] = useState(Array(40).fill(0));
+  const [tab2Data] = useState(Array(30).fill(0));
 
   /**
    * ref
@@ -210,10 +211,10 @@ const App = () => {
         {...headerPanResponder.panHandlers}
         style={[styles.header, {transform: [{translateY: y}]}]}>
         <TouchableOpacity
+          style={{flex: 1, justifyContent: 'center'}}
           activeOpacity={1}
-          style={{height: 300, width: '100%'}}
           onPress={() => Alert.alert('header Clicked!')}>
-          <Image style={{height: 300, width: '100%'}} source={{uri: imgUrl}} />
+          <Text>Scrollable Header</Text>
         </TouchableOpacity>
       </Animated.View>
     );
@@ -389,14 +390,14 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: SafeStatusBar,
   },
   header: {
-    height: 300,
+    height: HeaderHeight,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
+    backgroundColor: '#40FFC4',
   },
   label: {fontSize: 16, color: '#222'},
   tab: {
